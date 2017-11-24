@@ -13,6 +13,9 @@ import random
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+# =============================================================================
+# INITIALIZATION
+# =============================================================================
 
 TestFilePath = r'data/optdigits.tes'
 TrainFilePath = r'data/optdigits.tra'
@@ -23,10 +26,14 @@ TrainDataRaw = pd.read_csv(TrainFilePath, sep=',', header=None)
 del TestFilePath
 del TrainFilePath
 
+
 #Pre processing data
 #Get labels from far right elements of dataframe
 TestLabels = TestDataRaw[TestDataRaw.shape[1]-1]
 TrainLabels = TrainDataRaw[TrainDataRaw.shape[1]-1]
+TrainDataRaw = TrainDataRaw.drop(TrainDataRaw.shape[1]-1,axis=1)
+TestDataRaw = TestDataRaw.drop(TestDataRaw.shape[1]-1,axis=1)
+
 
 #Calculating probabilities for each class according to train data
 ClassProbability = []
@@ -39,9 +46,22 @@ ClassProbability = ClassProbability.drop(0, axis=1)
 ClassCount = len(ClassProbability)
 ClassProbability = ClassProbability/TrainDataRaw.shape[0]
 
-#Purity Detection (Entropy will be used here)
-Entropy_N = -np.sum(ClassProbability['probability']*np.log2(ClassProbability['probability']))
+# =============================================================================
+# INFORMATION GAIN
+# =============================================================================
+
+# Entropy using the frequency of classes
+#   (✓) In opdigits, it is expected to get something around 3-3.5 of entropy as we have 10 lasses with similar probabilities. Similar probabilities will maximize entropy.
+#   (✗) It is expected to get a high (close to 1) gini index, as probabilities are similar
+Entropy_N = -np.sum(ClassProbability['probability']*np.log2(ClassProbability['probability'])) 
 Gini_N = 1-np.sum(ClassProbability['probability']*ClassProbability['probability'])
+
+#Entropy using the frequency table of two attributes:
+#   Using pairs of the attributes(64 attributes here) and class
+
+
+
+
 
 
 class treeNode():
