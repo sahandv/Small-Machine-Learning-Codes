@@ -37,10 +37,11 @@ ClassProbability = pd.DataFrame(ClassProbability)
 ClassProbability['probability'] = ClassProbability[0]
 ClassProbability = ClassProbability.drop(0, axis=1)
 ClassCount = len(ClassProbability)
-ClassProbability = ClassProbability/ClassCount
+ClassProbability = ClassProbability/TrainDataRaw.shape[0]
 
-
-
+#Purity Detection (Entropy will be used here)
+Entropy_N = -np.sum(ClassProbability['probability']*np.log2(ClassProbability['probability']))
+Gini_N = 1-np.sum(ClassProbability['probability']*ClassProbability['probability'])
 
 
 class treeNode():
