@@ -17,22 +17,28 @@ import matplotlib.gridspec as gridspec
 TestFilePath = r'data/optdigits.tes'
 TrainFilePath = r'data/optdigits.tra'
 
+#Reading file as dataframe and creating sequential column headings
 TestDataRaw = pd.read_csv(TestFilePath, sep=',', header=None)
 TrainDataRaw = pd.read_csv(TrainFilePath, sep=',', header=None)
-
 del TestFilePath
 del TrainFilePath
 
 #Pre processing data
-#Get labels
+#Get labels from far right elements of dataframe
 TestLabels = TestDataRaw[TestDataRaw.shape[1]-1]
 TrainLabels = TrainDataRaw[TrainDataRaw.shape[1]-1]
 
-#Class Probabilities
+#Calculating probabilities for each class according to train data
 ClassProbability = []
 for i in range(0,10):
     ClassProbability.append(len(TrainLabels.loc[TrainLabels==i]))
 del i
+ClassProbability = pd.DataFrame(ClassProbability)
+ClassProbability['probability'] = ClassProbability[0]
+ClassProbability = ClassProbability.drop(0, axis=1)
+ClassCount = len(ClassProbability)
+ClassProbability = ClassProbability/ClassCount
+
 
 
 
