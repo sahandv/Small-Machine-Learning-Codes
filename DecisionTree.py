@@ -31,8 +31,8 @@ del TrainFilePath
 #Get labels from far right elements of dataframe
 TestLabels = TestDataRaw[TestDataRaw.shape[1]-1]
 TrainLabels = TrainDataRaw[TrainDataRaw.shape[1]-1]
-TrainDataRaw = TrainDataRaw.drop(TrainDataRaw.shape[1]-1,axis=1)
-TestDataRaw = TestDataRaw.drop(TestDataRaw.shape[1]-1,axis=1)
+TrainData = TrainDataRaw.drop(TrainDataRaw.shape[1]-1,axis=1)
+TestData = TestDataRaw.drop(TestDataRaw.shape[1]-1,axis=1)
 
 
 #Calculating probabilities for each class according to train data
@@ -44,7 +44,7 @@ ClassProbability = pd.DataFrame(ClassProbability)
 ClassProbability['probability'] = ClassProbability[0]
 ClassProbability = ClassProbability.drop(0, axis=1)
 ClassCount = len(ClassProbability)
-ClassProbability = ClassProbability/TrainDataRaw.shape[0]
+ClassProbability = ClassProbability/TrainData.shape[0]
 
 # =============================================================================
 # INFORMATION GAIN
@@ -56,11 +56,46 @@ ClassProbability = ClassProbability/TrainDataRaw.shape[0]
 Entropy_N = -np.sum(ClassProbability['probability']*np.log2(ClassProbability['probability'])) 
 Gini_N = 1-np.sum(ClassProbability['probability']*ClassProbability['probability'])
 
-#Entropy using the frequency table of two attributes:
+#Attribute entropy using the frequency table of attributes:
 #   Using pairs of the attributes(64 attributes here) and class
-
-
-
+MaxAttributeValue = TrainData.max().max()
+MinAttributeValue = 0
+i = 1
+#For each column/attribute (probably 64 in opdigits data):
+#for i in range(0,TrainData.shape[1]): 
+TempData_column_and_label =  TrainDataRaw[[i,TrainDataRaw.shape[1]-1]]
+AttributeTable = []
+AttributeTable_col_sums = []
+AttributeTable = pd.DataFrame(AttributeTable)
+AttributeTable_col_sums = pd.DataFrame(AttributeTable_col_sums)
+#    For each possible value of a column (probably between 0 and 16 in opdigits data):
+for j in range(0,MaxAttributeValue+1):
+    
+#        "attribute & class" table shape / or reverse
+#           0 1 2 3 4 5 6 7 8 9 
+#       0 \  TempFrequency = [0]  \
+#       1 \  TempFrequency = [1]  \
+#       2 \  TempFrequency = [2]  \
+#       3 \  TempFrequency = [3]  \
+#                 ......
+#      15 \  TempFrequency = [15] \
+#      16 \  TempFrequency = [16] \
+     
+     ValuesInColumn = TempData_column_and_label.loc[TempData_column_and_label[i]==j] #Rows with value j in column i
+ #        Find frequency of classes for the value j of column i (will give a 10 element array):
+     TempClassFrequency = []
+     for k in range(0,10):
+         TempClassFrequency.append(len(ValuesInColumn.loc[ValuesInColumn[TrainDataRaw.shape[1]-1]==k]))
+     del k
+#         TempClassFrequency = pd.DataFrame(TempClassFrequency)
+#         if j>0 :
+#             TempClassFrequency[j] = TempClassFrequency[0]
+#             TempClassFrequency = TempClassFrequency.drop(0, axis=1)
+     AttributeTable[j] = TempClassFrequency
+     AttributeTable_col_sums[j] = [np.sum(TempClassFrequency)]
+     print(np.sum(TempClassFrequency))
+#    Find the entropy of 16 values for each class
+     np.sum
 
 
 
