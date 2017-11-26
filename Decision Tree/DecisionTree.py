@@ -15,10 +15,9 @@ import matplotlib.gridspec as gridspec
 
 Nodes = {}
 
-def entropy(df_list):
-    result = -np.sum(df_list*np.log2(df_list)) 
-    return(result)
-    
+# =============================================================================
+# Classes and functions
+# =============================================================================
 class treeNode():
     def __init__(self, is_leaf, attr_index, attr_table, entropy, parent, height):
         self.is_leaf = is_leaf
@@ -30,7 +29,11 @@ class treeNode():
         self.right = None
         self.left = None
         self.height = height
-
+        
+def entropy(df_list):
+    result = -np.sum(df_list*np.log2(df_list)) 
+    return(result)
+    
 def nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue):
     TotalEntropy = []
     TotalEntropy = pd.DataFrame(TotalEntropy)
@@ -175,8 +178,8 @@ for epoch in range(0,1):
 
 
 ###############################################################################
-for s in range(0,18):
-    print(Nodes[s].attr_index)
+for it in range(0,18):
+    print(Nodes[it].attr_index)
 
 
 
