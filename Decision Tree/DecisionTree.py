@@ -20,23 +20,25 @@ def entropy(df_list):
     return(result)
     
 class treeNode():
-    def __init__(self, is_leaf, attr_index, attr_table, parent, height):
+    def __init__(self, is_leaf, attr_index, attr_table, entropy, parent, height):
         self.is_leaf = is_leaf
         self.attr_split_points = None
         self.attr_index = attr_index
         self.attr_table = attr_table
+        self.entropy = entropy
         self.parent = parent
         self.right = None
         self.left = None
         self.height = height
 
-def nodeFinder(TrainData):
+def nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue):
     TotalEntropy = []
     TotalEntropy = pd.DataFrame(TotalEntropy)
     TotalGain = []
     TotalGain = pd.DataFrame(TotalGain)
     AttributeTable_N = {}
     AttributeTable_T = {}
+    TrainDataSize = TrainData.shape[0]
     #For each column/attribute (probably 64 in opdigits data):
     for i in range(0,TrainData.shape[1]): 
         TempData_column_and_label =  TrainDataRaw[[i,TrainDataRaw.shape[1]-1]]
@@ -67,7 +69,7 @@ def nodeFinder(TrainData):
          #        Find frequency of classes for the value j of column i (will give a 10 element array):
              TempClassFrequency = []
              for k in range(0,10):
-                 TempClassFrequency.append(len(ValuesInColumn.loc[ValuesInColumn[TrainDataRaw.shape[1]-1]==k]))
+                 TempClassFrequency.append(len(ValuesInColumn.loc[ValuesInColumn[TrainData.shape[1]]==k]))
              del k
         
              AttributeTable[j] = TempClassFrequency
@@ -142,31 +144,39 @@ MinAttributeValue = 0
 
 
 # =============================================================================
-# INFORMATION GAIN
+# Tree Generation
 # =============================================================================
 
 
-MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData)
+MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue)
 
 #Now we have the best break node
 #If there is no pure branch, further split is required.
 AttributeTable_other_method = TrainDataRaw.pivot_table(0,index=TrainData.shape[1], columns=MaxGain_index,aggfunc='count')
 
 all_is_leaf = False
-
+NodeCount = 0;
 for epoch in range(0,1): 
 
-    Nodes[epoch] = treeNode(False,MaxGain_index,AttributeTable_T[MaxGain_index],None,0)
+    Nodes[NodeCount] = treeNode(False,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
     if all_is_leaf:
         TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
     
     for i in range(0,MaxAttributeValue+1): 
+        NodeCount=NodeCount+1
+        print("deviding nodes "+str(i))
         TrainData_split = TrainData.loc[TrainData[MaxGain_index]==0]
+        TrainDataRaw_split = TrainDataRaw.loc[TrainDataRaw[MaxGain_index]==0]
+        MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split,TrainDataRaw_split,MaxAttributeValue)
+        Nodes[NodeCount] = treeNode(False,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,epoch,0)
         
-        
-        
+    
 
 
+
+###############################################################################
+for s in range(0,18):
+    print(Nodes[s].attr_index)
 
 
 
