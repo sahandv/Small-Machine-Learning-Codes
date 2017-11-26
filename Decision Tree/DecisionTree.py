@@ -150,7 +150,6 @@ MinAttributeValue = 0
 # Tree Generation
 # =============================================================================
 
-
 MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue)
 
 #Now we have the best break node
@@ -159,30 +158,46 @@ AttributeTable_other_method = TrainDataRaw.pivot_table(0,index=TrainData.shape[1
 
 all_is_leaf = False
 NodeCount = 0;
+counter = 0;
 for epoch in range(0,1): 
-
-    Nodes[NodeCount] = treeNode(False,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
-    if all_is_leaf:
-        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
+    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
+    counter = counter+1
+#    if all_is_leaf:
+#        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
     
     for i in range(0,MaxAttributeValue+1): 
+        all_is_leaf = False
+        
         NodeCount=NodeCount+1
-        print("deviding nodes "+str(i))
+        print("deviding nodes "+str(NodeCount))
         TrainData_split = TrainData.loc[TrainData[MaxGain_index]==0]
         TrainDataRaw_split = TrainDataRaw.loc[TrainDataRaw[MaxGain_index]==0]
         MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split,TrainDataRaw_split,MaxAttributeValue)
-        Nodes[NodeCount] = treeNode(False,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,epoch,0)
+        Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,epoch,1)
+        counter = counter+1
         
-    
-
-
+        NodeCount_kid = 0;
+        for j in range(0,MaxAttributeValue+1):
+            all_is_leaf = False
+            
+            NodeCount_kid=NodeCount_kid+1
+            TrainData_split_kid = TrainData_split.loc[TrainData_split[MaxGain_index]==0]
+            TrainDataRaw_split_kid = TrainDataRaw_split.loc[TrainDataRaw_split[MaxGain_index]==0]
+            print("deviding nodes further "+str(NodeCount_kid))
+            print(TrainData_split_kid.shape[0])
+            MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split_kid,TrainDataRaw_split_kid,MaxAttributeValue)
+            Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,NodeCount,2)
+            counter = counter+1
 
 ###############################################################################
-for it in range(0,18):
-    print(Nodes[it].attr_index)
+for it in Nodes:
+#    print(it,Nodes[it].attr_index)
+#    print(Nodes[it].entropy)
+#    print(Nodes[it].parent)
+    if Nodes[it].parent<18:
+        print(Nodes[it].attr_index)
 
-
-
+#len(Nodes)
 
 
 
