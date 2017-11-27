@@ -16,8 +16,8 @@ from sklearn.neural_network import MLPClassifier
 np.random.seed(seed=300)
 
 # load train and test data
-train = np.loadtxt(open(os.path.join('input', 'optdigits.tra'), "rb"), delimiter=",")
-test =np.loadtxt(open(os.path.join('input', 'optdigits.tes'), "rb"), delimiter=",")
+train = np.loadtxt(open(os.path.join('data', 'optdigits.tra'), "rb"), delimiter=",")
+test =np.loadtxt(open(os.path.join('data', 'optdigits.tes'), "rb"), delimiter=",")
 
 # Define labels for confusion matrix figure
 tick_label = ['0','1','2','3','4','5','6','7','8','9']
@@ -69,7 +69,7 @@ def plot_confusion_matrix(cm, classes,
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
-    plt.savefig(title)
+#    plt.savefig(title)
 
 
 
