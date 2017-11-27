@@ -58,18 +58,6 @@ def confusionMatrix(cm, classes,
     plt.xlabel('Predicted label')
 
 
-# compute accuracy per class
-def classAccuracy(conf_train, conf_test, flag=False):
-	if flag:
-		print('Class    train accuracy     test accuracy')
-	else:
-		print('Class    Before Removal     After Removal')
-	for i in range(10):
-		train_acc = float(conf_train[i,i])/np.sum(conf_train[i,:])
-		test_acc = float(conf_test[i,i])/np.sum(conf_test[i,:])
-		print(' {}       {:.4f}           {:.4f}'.format(i, train_acc, test_acc))      
-
-
 # =============================================================================
 # INITIALIZATION
 # =============================================================================
@@ -145,59 +133,6 @@ ConfusionKNN_test = confusion_matrix(TestLabels, PredictionsKNN_test)
 # Plot
 confusionMatrix(ConfusionKNN_test, classes=ClassLabels, title="KNN Confusion Matrix -Test")
 
-
-# =============================================================================
-# Linear Discriminant
-# =============================================================================
-# Regularization penalties
-Regs = [0.0001, 0.001, 0.01, 0.1, 1, 10]
-AccuracyLD = []
-BestLD = None
-MaxAcc = -1
-for reg in Regs:
-    SGD = linear_model.SGDClassifier(alpha=reg) #Constructing "Linear classifiers" / stochastic gradient descent (SGD)
-    SGD.fit(TrainData_90, TrainLabels_90) #Training
-    ValidationAccuracy = SGD.score(TrainData_validation, TrainLabels_validation) #Computing accuracy
-    AccuracyLD.append(ValidationAccuracy)
-    if ValidationAccuracy > MaxAcc:
-    	BestLD = SGD
-    	MaxAcc = ValidationAccuracy
-
-
-BestRegulization = Regs[AccuracyLD.index(max(AccuracyLD))]
-print ("Best alpha: {}\n".format(BestRegulization))
-
-
-# Validation accuracy
-y_pred_val_sgd = BestLD.predict(TrainData_validation)
-print("Validation accuracy (Linear Discriminant): {:.4f}".format(BestLD.score(TrainData_validation, TrainLabels_validation)))
-
-#Constructing "Linear classifiers" / stochastic gradient descent (SGD)
-start = time.time()
-SGD = linear_model.SGDClassifier(alpha=BestRegulization)
-#Training
-SGD.fit(TrainData, TrainLabels)
-print("alpha: {}, training time {:.4f} sec.".format(BestRegulization, time.time() - start))
-
-# Predicting using "Linear classifiers" lib - train
-PredictionsLD_train = SGD.predict(TrainData)
-ConfusionSGD_train = confusion_matrix(TrainLabels, PredictionsLD_train)
-
-# Plot
-confusionMatrix(ConfusionSGD_train, classes=ClassLabels,title="Linear Classifier Confusion Matrix -Train")
-
-
-# Predicting using "Linear classifiers" lib - test
-start = time.time()
-PredictionsLD_test = SGD.predict(TestData)
-print("alpha: {}, testing time {:.4f} sec.".format(BestRegulization, time.time() - start))
-print("Test accuracy (linear classifier): {:.4f}\n".format(SGD.score(TestData, TestLabels)))
-ConfusionSGD_test = confusion_matrix(TestLabels, PredictionsLD_test)
-
-# Plot
-confusionMatrix(ConfusionSGD_test, classes=ClassLabels,title="Linear Classifier Confusion Matrix -Test")
-
-
 # =============================================================================
 # Multilayer Perceptron
 # =============================================================================
@@ -249,41 +184,56 @@ ConfusionMLP_test = confusion_matrix(TestLabels, PredictionMLP_test)
 confusionMatrix(ConfusionMLP_test, classes=ClassLabels,title="MLP Confusion Matrix -Test")
 
 
-
 # =============================================================================
-# Accuracy of KNN, LD , MLP for all classes
+# Linear Discriminant
 # =============================================================================
-print('\n\n # # # # # # # # # # # # # # # # # # # # # # # # # #')
-print('     KNN')
-print(' # # # # # # # # # # # # # # # # # # # # # # # # # #')
-
-classAccuracy(ConfusionKNN_train, ConfusionKNN_test, flag=True)
-
-
-print('\n\n # # # # # # # # # # # # # # # # # # # # # # # # # #')
-print('     Linear Discriminant Classifier')
-print(' # # # # # # # # # # # # # # # # # # # # # # # # # #')
-classAccuracy(ConfusionSGD_train, ConfusionSGD_test, flag=True)
-
-print('\n\n # # # # # # # # # # # # # # # # # # # # # # # # # #')
-print('     MLP')
-print(' # # # # # # # # # # # # # # # # # # # # # # # # # #')
-classAccuracy(ConfusionMLP_train, ConfusionMLP_test, flag=True)
+# Regularization penalties
+Regs = [0.0001, 0.001, 0.01, 0.1, 1, 10]
+AccuracyLD = []
+BestLD = None
+MaxAcc = -1
+for reg in Regs:
+    SGD = linear_model.SGDClassifier(alpha=reg) #Constructing "Linear classifiers" / stochastic gradient descent (SGD)
+    SGD.fit(TrainData_90, TrainLabels_90) #Training
+    ValidationAccuracy = SGD.score(TrainData_validation, TrainLabels_validation) #Computing accuracy
+    AccuracyLD.append(ValidationAccuracy)
+    if ValidationAccuracy > MaxAcc:
+    	BestLD = SGD
+    	MaxAcc = ValidationAccuracy
 
 
+BestRegulization = Regs[AccuracyLD.index(max(AccuracyLD))]
+print ("Best alpha: {}\n".format(BestRegulization))
 
 
+# Validation accuracy
+y_pred_val_sgd = BestLD.predict(TrainData_validation)
+print("Validation accuracy (Linear Discriminant): {:.4f}".format(BestLD.score(TrainData_validation, TrainLabels_validation)))
+
+#Constructing "Linear classifiers" / stochastic gradient descent (SGD)
+start = time.time()
+SGD = linear_model.SGDClassifier(alpha=BestRegulization)
+#Training
+SGD.fit(TrainData, TrainLabels)
+print("alpha: {}, training time {:.4f} sec.".format(BestRegulization, time.time() - start))
+
+# Predicting using "Linear classifiers" lib - train
+PredictionsLD_train = SGD.predict(TrainData)
+ConfusionSGD_train = confusion_matrix(TrainLabels, PredictionsLD_train)
+
+# Plot
+confusionMatrix(ConfusionSGD_train, classes=ClassLabels,title="Linear Classifier Confusion Matrix -Train")
 
 
+# Predicting using "Linear classifiers" lib - test
+start = time.time()
+PredictionsLD_test = SGD.predict(TestData)
+print("alpha: {}, testing time {:.4f} sec.".format(BestRegulization, time.time() - start))
+print("Test accuracy (linear classifier): {:.4f}\n".format(SGD.score(TestData, TestLabels)))
+ConfusionSGD_test = confusion_matrix(TestLabels, PredictionsLD_test)
 
-
-
-
-
-
-
-
-
+# Plot
+confusionMatrix(ConfusionSGD_test, classes=ClassLabels,title="Linear Classifier Confusion Matrix -Test")
 
 
 
