@@ -115,7 +115,8 @@ start = time.time()
 knn = KNeighborsClassifier(n_neighbors=BestNeihgbor)
 # Training
 knn.fit(TrainData, TrainLabels)
-print("Nearest neighbors: {}, training time {:.4f} sec.".format(BestNeihgbor, time.time() - start))
+Time_KNN_train = time.time() - start
+print("Nearest neighbors: {}, training time {:.4f} sec.".format(BestNeihgbor, Time_KNN_train))
 
 # Pridiction using "Nearest Neighbor Classification" lib - train
 PredictionsKNN_train = knn.predict(TrainData)
@@ -127,7 +128,8 @@ confusionMatrix(ConfusionKNN_train, classes=ClassLabels, title="KNN Confusion Ma
 start = time.time()
 # Pridiction using "Nearest Neighbor Classification" lib - test
 PredictionsKNN_test = knn.predict(TestData)
-print("Nearest neighbors: {} testing time {:.4f} sec.".format(BestNeihgbor, time.time() - start))
+Time_KNN_test = time.time() - start
+print("Nearest neighbors: {} testing time {:.4f} sec.".format(BestNeihgbor, Time_KNN_test))
 print("Test accuracy (KNN): {:.4f}\n".format(knn.score(TestData, TestLabels)))
 ConfusionKNN_test = confusion_matrix(TestLabels, PredictionsKNN_test)
 
@@ -167,7 +169,8 @@ start = time.time()
 #Constructing MLP
 MLP = MLPClassifier(solver='adam', alpha=BestRegulization, hidden_layer_sizes=BestHL)
 MLP.fit(TrainData, TrainLabels)
-print("Hiiden Layers: {}, alpha: {}, training time {:.4f} sec.".format(BestHL, BestRegulization, time.time() - start))
+Time_MLP_train = time.time() - start
+print("Hiiden Layers: {}, alpha: {}, training time {:.4f} sec.".format(BestHL, BestRegulization, Time_MLP_train))
 
 # Predicting using "MLP" lib - test
 PredictionMLP_train = MLP.predict(TrainData)
@@ -177,7 +180,8 @@ confusionMatrix(ConfusionMLP_train, classes=ClassLabels,title="MLP Confusion Mat
 start = time.time()
 # Predicting using "MLP" lib - test
 PredictionMLP_test = MLP.predict(TestData)
-print("Hidden Layers: {}, alpha: {}, testing time {:.4f} sec.".format(BestHL, BestRegulization, time.time() - start))
+Time_MLP_test = time.time() - start
+print("Hidden Layers: {}, alpha: {}, testing time {:.4f} sec.".format(BestHL, BestRegulization, Time_MLP_test))
 print("Test accuracy (MLP): {:.4f}\n".format(MLP.score(TestData, TestLabels)))
 ConfusionMLP_test = confusion_matrix(TestLabels, PredictionMLP_test)
 
@@ -218,7 +222,8 @@ start = time.time()
 SGD = linear_model.SGDClassifier(alpha=BestRegulization)
 #Training
 SGD.fit(TrainData, TrainLabels)
-print("alpha: {}, training time {:.4f} sec.".format(BestRegulization, time.time() - start))
+Time_LD_train = time.time() - start
+print("alpha: {}, training time {:.4f} sec.".format(BestRegulization, Time_LD_train))
 
 # Predicting using "Linear classifiers" lib - train
 PredictionsLD_train = SGD.predict(TrainData)
@@ -231,11 +236,20 @@ confusionMatrix(ConfusionSGD_train, classes=ClassLabels,title="Linear Classifier
 # Predicting using "Linear classifiers" lib - test
 start = time.time()
 PredictionsLD_test = SGD.predict(TestData)
-print("alpha: {}, testing time {:.4f} sec.".format(BestRegulization, time.time() - start))
-print("Test accuracy (linear classifier): {:.4f}\n".format(SGD.score(TestData, TestLabels)))
+Time_LD_test = time.time() - start
+print("alpha: {}, testing time {:.4f} sec.".format(BestRegulization, Time_LD_test))
+print("Test accuracy (Linear Discriminant): {:.4f}\n".format(SGD.score(TestData, TestLabels)))
 ConfusionSGD_test = confusion_matrix(TestLabels, PredictionsLD_test)
 
 # Plot
 confusionMatrix(ConfusionSGD_test, classes=ClassLabels,title="Linear Classifier Confusion Matrix -Test")
+print("\
+\n# =============================================================================\
+\n# Comparing Times\
+\n# =============================================================================\
+\n")
+print("MLP Train and Test:"+str(Time_MLP_train)+" , "+str(Time_MLP_test))
 
+print("Linear Disc. Train and Test:"+str(Time_LD_train)+" , "+str(Time_LD_test))
 
+print("KNN Train and Test:"+str(Time_KNN_train)+" , "+str(Time_KNN_test))
