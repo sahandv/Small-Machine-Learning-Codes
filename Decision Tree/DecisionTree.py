@@ -12,8 +12,14 @@ import time
 import random
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-
 Nodes = {}
+
+# =============================================================================
+# Data File Path
+# =============================================================================
+
+TestFilePath = r'data/optdigits.tes'
+TrainFilePath = r'data/optdigits.tra'
 
 # =============================================================================
 # Classes and functions
@@ -101,9 +107,6 @@ def nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue):
 # =============================================================================
 # INITIALIZATION
 # =============================================================================
-TestFilePath = r'data/optdigits.tes'
-TrainFilePath = r'data/optdigits.tra'
-
 #Reading file as dataframe and creating sequential column headings
 TestDataRaw = pd.read_csv(TestFilePath, sep=',', header=None)
 TrainDataRaw = pd.read_csv(TrainFilePath, sep=',', header=None)
@@ -156,26 +159,26 @@ MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainD
 #If there is no pure branch, further split is required.
 AttributeTable_other_method = TrainDataRaw.pivot_table(0,index=TrainData.shape[1], columns=MaxGain_index,aggfunc='count')
 
-all_is_leaf = False
-NodeCount = 0;
-counter = 0;
-for epoch in range(0,1): 
-    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
-    counter = counter+1
-#    if all_is_leaf:
-#        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
-    
-    for i in range(0,MaxAttributeValue+1): 
-        all_is_leaf = False
-        
-        NodeCount=NodeCount+1
-        print("deviding nodes "+str(NodeCount))
-        TrainData_split = TrainData.loc[TrainData[MaxGain_index]==0]
-        TrainDataRaw_split = TrainDataRaw.loc[TrainDataRaw[MaxGain_index]==0]
-        MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split,TrainDataRaw_split,MaxAttributeValue)
-        Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,epoch,1)
-        counter = counter+1
+#all_is_leaf = False
+#NodeCount = 0;
+#counter = 0;
+#for epoch in range(0,1): 
+#    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
+#    counter = counter+1
+##    if all_is_leaf:
+##        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
+#    
+#    for i in range(0,MaxAttributeValue+1): 
+#        all_is_leaf = False
 #        
+#        NodeCount=NodeCount+1
+#        print("deviding nodes "+str(NodeCount))
+#        TrainData_split = TrainData.loc[TrainData[MaxGain_index]==0]
+#        TrainDataRaw_split = TrainDataRaw.loc[TrainDataRaw[MaxGain_index]==0]
+#        MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split,TrainDataRaw_split,MaxAttributeValue)
+#        Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,epoch,1)
+#        counter = counter+1
+##        
 #        NodeCount_kid = 0;
 #        for j in range(0,MaxAttributeValue+1):
 #            all_is_leaf = False
@@ -190,12 +193,12 @@ for epoch in range(0,1):
 #            counter = counter+1
 
 ###############################################################################
-for it in Nodes:
+#for it in Nodes:
 #    print(it,Nodes[it].attr_index)
 #    print(Nodes[it].entropy)
 #    print(Nodes[it].parent)
-    if Nodes[it].parent<18:
-        print(Nodes[it].attr_index)
+#    if Nodes[it].parent<18:
+#        print(Nodes[it].attr_index)
 
 #len(Nodes)
 

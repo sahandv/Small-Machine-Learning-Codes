@@ -18,7 +18,12 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn import linear_model
 from sklearn.neural_network import MLPClassifier
 
+# =============================================================================
+# Data File Path
+# =============================================================================
 
+TestFilePath = r'data/optdigits.tes'
+TrainFilePath = r'data/optdigits.tra'
 
 # =============================================================================
 # Classes and functions
@@ -61,9 +66,6 @@ def confusionMatrix(cm, classes,
 # =============================================================================
 # INITIALIZATION
 # =============================================================================
-TestFilePath = r'data/optdigits.tes'
-TrainFilePath = r'data/optdigits.tra'
-
 #Reading file as dataframe and creating sequential column headings
 TestDataRaw = pd.read_csv(TestFilePath, sep=',', header=None)
 TrainDataRaw = pd.read_csv(TrainFilePath, sep=',', header=None)
