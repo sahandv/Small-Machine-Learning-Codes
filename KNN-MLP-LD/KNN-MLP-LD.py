@@ -213,7 +213,7 @@ for hl in HiddenLayers:
     for reg in Regs:
     	MLP = MLPClassifier(solver='adam', alpha=reg, hidden_layer_sizes=hl)#Constructing 
     	MLP.fit(TrainData_90, TrainLabels_90)#Training
-    	ValidationAccuracyMLP = MLP.score(TrainData_validation, TrainLabels_validation) # accuracy for validation set
+    	ValidationAccuracyMLP = MLP.score(TrainData_validation, TrainLabels_validation) # computing accuracy
     	AccuracyMLP.append(ValidationAccuracyMLP)
     	if ValidationAccuracyMLP > MaxAccuracy:
     		BestMLP = MLP

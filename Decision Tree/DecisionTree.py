@@ -175,19 +175,19 @@ for epoch in range(0,1):
         MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split,TrainDataRaw_split,MaxAttributeValue)
         Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,epoch,1)
         counter = counter+1
-        
-        NodeCount_kid = 0;
-        for j in range(0,MaxAttributeValue+1):
-            all_is_leaf = False
-            
-            NodeCount_kid=NodeCount_kid+1
-            TrainData_split_kid = TrainData_split.loc[TrainData_split[MaxGain_index]==0]
-            TrainDataRaw_split_kid = TrainDataRaw_split.loc[TrainDataRaw_split[MaxGain_index]==0]
-            print("deviding nodes further "+str(NodeCount_kid))
-            print(TrainData_split_kid.shape[0])
-            MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split_kid,TrainDataRaw_split_kid,MaxAttributeValue)
-            Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,NodeCount,2)
-            counter = counter+1
+#        
+#        NodeCount_kid = 0;
+#        for j in range(0,MaxAttributeValue+1):
+#            all_is_leaf = False
+#            
+#            NodeCount_kid=NodeCount_kid+1
+#            TrainData_split_kid = TrainData_split.loc[TrainData_split[MaxGain_index]==0]
+#            TrainDataRaw_split_kid = TrainDataRaw_split.loc[TrainDataRaw_split[MaxGain_index]==0]
+#            print("deviding nodes further "+str(NodeCount_kid))
+#            print(TrainData_split_kid.shape[0])
+#            MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainData_split_kid,TrainDataRaw_split_kid,MaxAttributeValue)
+#            Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,NodeCount,2)
+#            counter = counter+1
 
 ###############################################################################
 for it in Nodes:
