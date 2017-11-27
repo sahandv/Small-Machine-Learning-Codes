@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov 22 12:15:14 2017
+Created on Wed Nov 22 12:17:35 2017
 
 @author: sahand
 """
@@ -100,8 +100,8 @@ def nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue):
     TotalGain = pd.DataFrame(TotalGain)
     TotalGain['gain'] = TotalGain[0]
     TotalGain = TotalGain.drop(0,axis=1)
-    MaxGain_index = TotalGain['gain'].argmax() #This is a decision node
-    
+    MaxGain_index = TotalGain['gain'].argmax() 
+    print("\nA node is found with index of "+str(MaxGain_index)+" . This index is the column or attirbute.")
     return(MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy)
 
 # =============================================================================
@@ -159,14 +159,16 @@ MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy = nodeFinder(TrainD
 #If there is no pure branch, further split is required.
 AttributeTable_other_method = TrainDataRaw.pivot_table(0,index=TrainData.shape[1], columns=MaxGain_index,aggfunc='count')
 
-#all_is_leaf = False
-#NodeCount = 0;
-#counter = 0;
-#for epoch in range(0,1): 
-#    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
-#    counter = counter+1
-##    if all_is_leaf:
-##        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
+all_is_leaf = False
+NodeCount = 0;
+counter = 0;
+for epoch in range(0,1): 
+    print("\n    Constructed Node "+str(counter))
+    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
+    counter = counter+1
+    
+#    if all_is_leaf:
+#        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
 #    
 #    for i in range(0,MaxAttributeValue+1): 
 #        all_is_leaf = False
