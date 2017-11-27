@@ -104,6 +104,9 @@ def nodeFinder(TrainData,TrainDataRaw,MaxAttributeValue):
     print("\nA node is found with index of "+str(MaxGain_index)+" . This index is the column or attirbute.")
     return(MaxGain_index,AttributeTable_N,AttributeTable_T,TotalEntropy)
 
+
+def recursiveNoder():
+    return(1)
 # =============================================================================
 # INITIALIZATION
 # =============================================================================
@@ -163,13 +166,29 @@ all_is_leaf = False
 NodeCount = 0;
 counter = 0;
 for epoch in range(0,1): 
-    print("\n    Constructed Node "+str(counter))
+    print("    Constructed Node "+str(counter))
     Nodes[counter] = treeNode(all_is_leaf,MaxGain_index,AttributeTable_T[MaxGain_index],TotalEntropy,None,0)
-    counter = counter+1
     
-#    if all_is_leaf:
-#        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
-#    
+    if all_is_leaf:
+        TrainData_temp = TrainData_temp.drop(MaxGain_index,axis=1)
+#    Divide and conquer
+    
+    TrainData_split_1 = TrainData.loc[TrainData[MaxGain_index]<8]
+    TrainData_split_2 = TrainData.loc[TrainData[MaxGain_index]>=8]
+    TrainDataRaw_split_1 = TrainDataRaw.loc[TrainDataRaw[MaxGain_index]<8]
+    TrainDataRaw_split_2 = TrainDataRaw.loc[TrainDataRaw[MaxGain_index]>=8]
+    
+    MaxGain_index_left,AttributeTable_N_left,AttributeTable_T_left,TotalEntropy_left = nodeFinder(TrainData_split_1,TrainDataRaw_split_1,MaxAttributeValue)
+    MaxGain_index_right,AttributeTable_N_right,AttributeTable_T_right,TotalEntropy_right = nodeFinder(TrainData_split_2,TrainDataRaw_split_2,MaxAttributeValue)
+    
+    counter = counter+1
+    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index_left,AttributeTable_T_left[MaxGain_index_left],TotalEntropy_left,counter-1,1)
+    print("    Constructed Node "+str(counter))
+    
+    counter = counter+1
+    Nodes[counter] = treeNode(all_is_leaf,MaxGain_index_right,AttributeTable_T_right[MaxGain_index_right],TotalEntropy_right,counter-2,1)
+    print("    Constructed Node "+str(counter))
+    
 #    for i in range(0,MaxAttributeValue+1): 
 #        all_is_leaf = False
 #        
@@ -205,10 +224,12 @@ for epoch in range(0,1):
 #len(Nodes)
 
 
-
-
-
-
+###############################################################################
+#To access results use:
+x = 0
+Nodes[x].attr_table
+Nodes[x].attr_index
+Nodes[x].entropy
 
 
 
