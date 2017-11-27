@@ -254,19 +254,19 @@ confusionMatrix(ConfusionMLP_test, classes=ClassLabels,title="MLP Confusion Matr
 # Accuracy of KNN, LD , MLP for all classes
 # =============================================================================
 print('\n\n # # # # # # # # # # # # # # # # # # # # # # # # # #')
-print('(KNN)')
+print('     KNN')
 print(' # # # # # # # # # # # # # # # # # # # # # # # # # #')
 
 classAccuracy(ConfusionKNN_train, ConfusionKNN_test, flag=True)
 
 
 print('\n\n # # # # # # # # # # # # # # # # # # # # # # # # # #')
-print('(Linear Discriminant Classifier)')
+print('     Linear Discriminant Classifier')
 print(' # # # # # # # # # # # # # # # # # # # # # # # # # #')
 classAccuracy(ConfusionSGD_train, ConfusionSGD_test, flag=True)
 
 print('\n\n # # # # # # # # # # # # # # # # # # # # # # # # # #')
-print('(MLP)')
+print('     MLP')
 print(' # # # # # # # # # # # # # # # # # # # # # # # # # #')
 classAccuracy(ConfusionMLP_train, ConfusionMLP_test, flag=True)
 
