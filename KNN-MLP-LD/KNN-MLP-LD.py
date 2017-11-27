@@ -87,10 +87,11 @@ TrainData_90, TrainData_validation, TrainLabels_90, TrainLabels_validation = tra
 
 ClassLabels = np.arange(0,10)
 
-# =============================================================================
-# KNN
-# =============================================================================
-
+print("\
+\n# =============================================================================\
+\n# KNN\
+\n# =============================================================================\
+\n")
 kNN_array = np.arange(1,20,2)
 AccuracyKNN = []
 
@@ -132,11 +133,11 @@ ConfusionKNN_test = confusion_matrix(TestLabels, PredictionsKNN_test)
 
 # Plot
 confusionMatrix(ConfusionKNN_test, classes=ClassLabels, title="KNN Confusion Matrix -Test")
-
-# =============================================================================
-# Multilayer Perceptron
-# =============================================================================
-
+print("\
+\n# =============================================================================\
+\n# Multilayer Perceptron\
+\n# =============================================================================\
+\n")
 BestMLP = None
 MaxAccuracy = -1
 BestHL = []
@@ -183,10 +184,12 @@ ConfusionMLP_test = confusion_matrix(TestLabels, PredictionMLP_test)
 # plot
 confusionMatrix(ConfusionMLP_test, classes=ClassLabels,title="MLP Confusion Matrix -Test")
 
+print("\
+\n# =============================================================================\
+\n# Linear Discriminant\
+\n# =============================================================================\
+\n")
 
-# =============================================================================
-# Linear Discriminant
-# =============================================================================
 # Regularization penalties
 Regs = [0.0001, 0.001, 0.01, 0.1, 1, 10]
 AccuracyLD = []
@@ -234,29 +237,5 @@ ConfusionSGD_test = confusion_matrix(TestLabels, PredictionsLD_test)
 
 # Plot
 confusionMatrix(ConfusionSGD_test, classes=ClassLabels,title="Linear Classifier Confusion Matrix -Test")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
