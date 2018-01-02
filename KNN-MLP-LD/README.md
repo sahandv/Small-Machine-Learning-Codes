@@ -1,4 +1,3 @@
-#KNN MLP LD using Scikit Learn in Pythin
-
+# KNN MLP LD using Scikit Learn in Pythin
 
 DO NOT RUN THESE CODES UNLESS YOU KNOW WHAT YOU ARE DOING!
