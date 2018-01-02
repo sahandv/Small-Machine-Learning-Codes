@@ -1,5 +1,6 @@
 This is the repository for small projects in Machine Learning
 We will put more scripts here as we move on.
+Most codes will be posted in -testing-. I do not dare to publish -master- branch codes. :)
 You may also have contributions to these codes, but please remember that:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
