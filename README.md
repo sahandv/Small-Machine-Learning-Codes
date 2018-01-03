@@ -1,6 +1,8 @@
+# Small Projects in Machine Learning
+
 This is the repository for small projects in Machine Learning
-We will put more scripts here as we move on.
-Most codes will be posted in -testing-. I do not dare to publish -master- branch codes. :)
+I will put more scripts here as we move on.
+These are some small, playground projects. You may use code parts.
 
 
 You may also have contributions to these codes, but please remember that:
