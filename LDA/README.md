@@ -1,4 +1,4 @@
-# LDA by R
+# LDA in R
 
 Dataset: 
 
