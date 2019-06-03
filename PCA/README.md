@@ -1,4 +1,4 @@
-# PCA by R
+# PCA in R
 
 To be honest, I don't remember much from this code. Just uploading to prevent the waste! :) 
 
